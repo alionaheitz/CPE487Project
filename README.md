@@ -1,13 +1,14 @@
 # CPE487Project - FPGA-based accelrometer interface and feedback control system
 
 ### Overview :
-This project is in the progress of creating a flight control system that uses the Nexys A7-100T's ADXLK362 2-axis accelerometer  via SPI, processes the sensor data, and displays it using the 7-segment display and onboard LEDs. A PWM signal is also generated to drive a servo motor based on real-time tilt detection, simulating a basic flight controller response.
+This project is in the progress of creating a flight control system that uses the Nexys A7-100T's ADXLK362 3-axis accelerometer via SPI communication protocol to process the sensor data, and displays it using the 7-segment display and onboard LEDs. A PWM signal is also generated to drive a servo motor based on real-time tilt detection, simulating a basic flight controller response. The system demonstrates skills in finite state machines (FSMs), SPI protocol, signal generation, sensor interfacing and hardware communication.
 
 Expected outputs: 
-- Visually via 16 onboard LEDs and a 7-segment display
-- Functionally by controlling a servo motor with PWM output
+Given the board's real time tilt data (on the x, y and z axis), the system is able to display that data and also adjust an external servo acting as a flight surface component like ailerons or rudders that respond to pitch or roll movements in an actual aircraft. More specifically, this system will : 
+- Visually output via 16 onboard LEDs and a 7-segment display
+- Functionally output by controlling a servo motor with PWM output
 
-The system demonstrates skills in finite state machines (FSMs), SPI protocol, signal generation, and sensor interfacing.
+
 
 ### Hierarchy of the files : 
 - XDC file mapping clocks, LEDs, switches, 7‑segment display, and PWM pin
