@@ -4,7 +4,7 @@
 This project is in the progress of creating a flight control system that uses the Nexys A7-100T's ADXLK362 3-axis accelerometer via SPI communication protocol to process the sensor data, and displays it using the 7-segment display and onboard LEDs. A PWM signal is also generated to drive a servo motor based on real-time tilt detection, simulating a basic flight controller response. The system demonstrates skills in finite state machines (FSMs), SPI protocol, signal generation, sensor interfacing and hardware communication.
 
  ![Alt text](visual1.png)
-Visual representation of a board's 3-axial data relative to an aircraft's rotations. 
+ - Visual representation of a board's 3-axial data relative to an aircraft's rotations. This board is not the one used in class!
 
 
 Expected outputs: 
