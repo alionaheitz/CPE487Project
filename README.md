@@ -1,21 +1,17 @@
 # CPE487Project
 
-Overview : This project is in the progress of creating a flight control system that uses the Nexys A7-100T's accelerometer x y and z's axis data to compute a real time orientation and generate a corresponding PWM signal used to control a servo motor, mimicking flight components adjusting to plane's orientation to restabilize. 
+### Overview :
+This project is in the progress of creating a flight control system that uses the Nexys A7-100T's accelerometer x y and z's axis data to compute a real time orientation and generate a corresponding PWM signal used to control a servo motor, mimicking flight components adjusting to plane's orientation to restabilize. 
 
 
 
-Hierarchy of the files : 
-
-/constraints/      ─ XDC file mapping clocks, LEDs, switches, 7‑segments, PWM pin
-/src/
-  ├─ top.vhd        ─ Top‑level instantiates all submodules
-  ├─ clk_gen.vhd    ─ Generates 4 MHz from 100 MHz input clock
-  ├─ spi_master.vhd ─ FSM for ADXL362 reads following SPI                           communication protocol
-  ├─ leddec16.vhd   ─ Packs and drives eight BCD digits on 
-      seven‑segment
-  ├─ controller.vhd ─ Computes servo PWM from X‑axis 
-     acceleration
-
+### Hierarchy of the files : 
+- XDC file mapping clocks, LEDs, switches, 7‑segment display, and PWM pin
+- top.vhd        — Top‑level entity instantiating all submodules
+- clk_gen.vhd    — Generates 4 MHz clock from 100 MHz input
+- spi_master.vhd — FSM for ADXL362 configuration and SPI data reads
+- leddec16.vhd   — Packs and drives eight BCD digits on the seven‑segment display
+- controller.vhd — Computes servo‑style PWM duty cycle from X‑axis acceleration
 
 
 
@@ -37,10 +33,6 @@ Hierarchy of the files :
 - Smoothly slews a PWM duty cycle toward 1 ms, 1.5 ms, or 2 ms pulses at 50 Hz.
 - Outputs `PWM_OUT` for hobby servo actuation.
 
-## Usage
-- **Demo mode**: Flip SW switches to view raw axis bits on the LED bar.
-- **Calibration**: Adjust the `threshold` constant in `controller.vhd` to tune sensitivity.
-- **Extensibility**: Add Y‑axis control by instantiating a second PWM generator in `top.vhd`.
 
 
 
