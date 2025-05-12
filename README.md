@@ -45,10 +45,9 @@ Given the board's real time tilt data (on the x, y and z axis), the system is ab
 - Smoothly slews a PWM duty cycle toward 1 ms, 1.5 ms, or 2 ms pulses at 50 Hz.
 - Outputs `PWM_OUT` for hobby servo actuation.
 
-### Modifications from Starter Code
+### Getting Started
+- No starter code, just youtube tutorials
 - FSM was implemented from scratch based on the ADXL362 datasheet
-- Used sign-extended 12-bit values, truncated to 5-bit unsigned for easier display
-- Added switch-based axis selection logic for LED output
 - PWM controller created using 'raw' data, not converted yet
 
 
