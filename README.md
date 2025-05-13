@@ -53,11 +53,11 @@ Based on real-time tilt data from the onboard accelerometer (X, Y, and Z axes), 
 ![servo.gif](v1-ezgif.com-optimize.gif)
 - Servo motor responds to X-axis tilt by adjusting its position via PWM signal
   
-![servo.gif](https://github.com/byett/dsd/blob/CPE487-Spring2024/Nexys-A7/Lab-2/servo.gif)
+![led.gif](v2-ezgif.com-optimize.gif)
 - 16 onboard LEDs display X-axis data in binary; gradual rotation increases or decreases the LED pattern accordingly
 
-![servo.gif](https://github.com/byett/dsd/blob/CPE487-Spring2024/Nexys-A7/Lab-2/servo.gif)
-![servo.gif](https://github.com/byett/dsd/blob/CPE487-Spring2024/Nexys-A7/Lab-2/servo.gif)
+![servo.gif](v3-ezgif.com-optimize.gif)
+![servo.gif](v4-ezgif.com-optimize.gif)
 - 7-segment display shows real-time X, Y, and Z accelerometer values, with visible shifts toward minimum or maximum values as the board is rotated
 
 ---------
