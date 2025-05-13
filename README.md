@@ -1,7 +1,7 @@
 # CPE487 - FPGA-based accelerometer interface and feedback control system
 
 ### Overview :
-This project involves developing a flight control system usesing the Nexys A7-100T FPGA, using its onboard ADXL362 3-axis accelerometer via SPI communication to continuously monitor real time X, Y, Z axis data. The system processes this sensor data to simulate aircraft orientation and generates a corresponding PWM signal to drive a servo motor, mimicking how flight surfaces like ailerons or rudders respond to pitch or roll movements. Sensor data is also displayed on the 7-segment display and onboard LEDs. The implementation showcases skills in finite state machines (FSMs), SPI protocol, signal generation, sensor interfacing, and real-time hardware communication.
+This project involves developing a flight control system using the Nexys A7-100T FPGA, using its onboard ADXL362 3-axis accelerometer via SPI communication to continuously monitor real time X, Y, Z axis data. The system processes this sensor data to simulate aircraft orientation and generates a corresponding PWM signal to drive a servo motor, mimicking how flight surfaces like ailerons or rudders respond to pitch or roll movements. Sensor data is also displayed on the 7-segment display and onboard LEDs. The implementation showcases skills in finite state machines (FSMs), SPI protocol, signal generation, sensor interfacing, and real-time hardware communication.
 
  ![Alt text](visual1.png)
  - Visual representation of a board's 3-axial data relative to an aircraft's rotations. This board is not the one used in class!
