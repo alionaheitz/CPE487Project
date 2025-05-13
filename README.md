@@ -12,8 +12,7 @@ Based on real-time tilt data from the onboard accelerometer (X, Y, and Z axes), 
 - Visually output via using the 16 onboard LEDs and the 7-segment display
 - Functionally output by generating a PWM signal to control a servo motor
 
-
-
+-----------------------
 ### Hierarchy of the files : 
 ![Alt text](Hierarchy.png)
 - XDC file mapping clock signal, LEDs, 7‑segment display, ADXL362 pins, and Pmod (for PWM)
@@ -21,7 +20,19 @@ Based on real-time tilt data from the onboard accelerometer (X, Y, and Z axes), 
 - clk_gen.vhd    — Generates 4 MHz clock from 100 MHz input
 - spi_master.vhd — Implements a finite state machine (FSM) to manage SPI communication with the ADXL362 accelerometer, handling command sequences, data transmission, and synchronization logic.
 - leddec16.vhd   — Packs and drives eight BCD digits on the seven‑segment display
-- controller.vhd — Compares the X-axis tilt against set threshold to determine direction and generates a smooth 50Hz PWM signal for servo control 
+- controller.vhd — Compares the X-axis tilt against set threshold to determine direction and generates a smooth 50Hz PWM signal for servo control
+
+
+---------
+
+## Getting Started
+- The system takes input from the onboard ADXL362 3-axis accelerometer and the default 100 MHz clock signal. Outputs include real-time data visualization on the 7-segment display and the 16 onboard LEDs, as well as control of a servo motor through a PWM signal sent via the Pmod JA interface.
+   -  Clock division was handled by a custom clk_gen.vhd module that divides the 100 MHz input clock down to 4 MHz using a simple counter-based divider.
+   - SPI communication was implemented in spi_master.vhd via a hand-coded 92-state FSM, controlling every SPI timing signal (SCLK, MOSI, SS) and reading all 6 bytes (2 bytes per axis) using burst mode. No IP blocks were used for SPI — the FSM transitions were manually optimized for state latency and edge alignment with SCLK.
+   - Each physical input/output was mapped using the .xdc file by matching get_ports constraints to pin numbers from the Digilent master XDC, such 
+   - Initial testing was done incrementally. The SPI state machine was validated by assigning output registers (acl_dataX) directly to LEDs for binary visualization:
+   - Later, display multiplexing and logic were added in leddec16.vhd, and seven-segment digits were verified through the bcd32 packaging. The project was synthesized, implemented, and the bitstream was uploaded using Vivado Hardware Manager, with hardware testing performed live on the board using physical switch flips, servo response, and live LED state analysis.
+- VHDL code was written from scratch, starting with research into SPI communication and the ADXL362 sensor's functionality. Found a helpful [Youtube video](https://www.youtube.com/watch?v=7b3YwQWwvXM) which provided insight into interfacing the ADXL362 with the Nexys A7. Core components like FSMs, clock division, LED control, and 7-segment display logic were implemented using skills learned in the course. Additional research was conducted to understand how to generate PWM signals for servo motor control.
 
 ---------
 ## Implementation
@@ -60,10 +71,6 @@ Based on real-time tilt data from the onboard accelerometer (X, Y, and Z axes), 
 ![servo.gif](v4-ezgif.com-optimize.gif)
 - 7-segment display shows real-time X, Y, and Z accelerometer values, with visible shifts toward minimum or maximum values as the board is rotated
 
----------
-## Getting Started
-- The system takes input from the onboard ADXL362 3-axis accelerometer and the default 100 MHz clock signal. Outputs include real-time data visualization on the 7-segment display and the 16 onboard LEDs, as well as control of a servo motor through a PWM signal sent via the Pmod JA interface.
-- VHDL code was written from scratch, starting with research into SPI communication and the ADXL362 sensor's functionality. Found a helpful [Youtube video](https://www.youtube.com/watch?v=7b3YwQWwvXM) which provided insight into interfacing the ADXL362 with the Nexys A7. Core components like FSMs, clock division, LED control, and 7-segment display logic were implemented using skills learned in the course. Additional research was conducted to understand how to generate PWM signals for servo motor control.
 
 ---------
 ## Servo Circuit
