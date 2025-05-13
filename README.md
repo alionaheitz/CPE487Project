@@ -1,33 +1,36 @@
-# CPE487Project - FPGA-based accelrometer interface and feedback control system
+# CPE487 - FPGA-based accelerometer interface and feedback control system
 
 ### Overview :
-This project is in the progress of creating a flight control system that uses the Nexys A7-100T's ADXLK362 3-axis accelerometer via SPI communication protocol to process the sensor data, and displays it using the 7-segment display and onboard LEDs. A PWM signal is also generated to drive a servo motor based on real-time tilt detection, simulating a basic flight controller response. The system demonstrates skills in finite state machines (FSMs), SPI protocol, signal generation, sensor interfacing and hardware communication.
+This project involves developing a flight control system usesing the Nexys A7-100T FPGA, using its onboard ADXL362 3-axis accelerometer via SPI communication to continuously monitor real time X, Y, Z axis data. The system processes this sensor data to simulate aircraft orientation and generates a corresponding PWM signal to drive a servo motor, mimicking how flight surfaces like ailerons or rudders respond to pitch or roll movements. Sensor data is also displayed on the 7-segment display and onboard LEDs. The implementation showcases skills in finite state machines (FSMs), SPI protocol, signal generation, sensor interfacing, and real-time hardware communication.
 
  ![Alt text](visual1.png)
  - Visual representation of a board's 3-axial data relative to an aircraft's rotations. This board is not the one used in class!
 
 
 Expected outputs: 
-Given the board's real time tilt data (on the x, y and z axis), the system is able to display that data and also adjust an external servo acting as a flight surface component like ailerons or rudders that respond to pitch or roll movements in an actual aircraft. More specifically, this system will : 
-- Visually output via 16 onboard LEDs and a 7-segment display
-- Functionally output by controlling a servo motor with PWM output
+Based on real-time tilt data from the onboard accelerometer (X, Y, and Z axes), the system will both display this data and respond by adjusting an external servo motor, simulating a flight control surface such as an aileron or rudder reacting to pitch or roll changes. Specifically, the system will: 
+- Visually output via using the 16 onboard LEDs and the 7-segment display
+- Functionally output by generating a PWM signal to control a servo motor
 
 
 
 ### Hierarchy of the files : 
-- XDC file mapping clocks, LEDs, switches, 7‑segment display, and PWM pin
+![Alt text](Hierarchy.png)
+- XDC file mapping clock signal, LEDs, 7‑segment display, ADXL362 pins, and Pmod (for PWM)
 - top.vhd        — Top‑level entity instantiating all submodules
 - clk_gen.vhd    — Generates 4 MHz clock from 100 MHz input
-- spi_master.vhd — FSM for ADXL362 configuration and SPI data reads
+- spi_master.vhd — Implements a finite state machine (FSM) to manage SPI communication with the ADXL362 accelerometer, handling command sequences, data transmission, and synchronization logic.
 - leddec16.vhd   — Packs and drives eight BCD digits on the seven‑segment display
-- controller.vhd — Computes servo‑style PWM duty cycle from X‑axis acceleration
+- controller.vhd — Compares the X-axis tilt against set threshold to determine direction and generates a smooth 50Hz PWM signal for servo control 
 
 ---------
 ## Implementation
 
 ### Data Collection (spi_master)
-- Implements a 92‑state FSM at 1 MHz SPI clock to configure and read the ADXL362.
-- Captures three 16‑bit axis values plus raw 15‑bit concatenation for LEDs.
+- Communicates with ADXL362 via SPI Mode 0 at 1 MHz clock
+- Performs burst reads: 2 bytes per axis (X, Y, Z), totaling 6 bytes
+- Implements a 92‑state FSM to configure and read sensor data
+- Output data rates is 100 Hz with an acceleration range of ±2g
 
  ![Alt text](FSM.png)
 
@@ -42,22 +45,45 @@ Given the board's real time tilt data (on the x, y and z axis), the system is ab
 
 ### Servo Control (controller)
 - Compares X‑axis acceleration against ±threshold to decide left/center/right.
-- Smoothly slews a PWM duty cycle toward 1 ms, 1.5 ms, or 2 ms pulses at 50 Hz.
+- Smoothly generates a PWM duty cycle corresponding to 1 ms, 1.5 ms, or 2 ms pulses at 50 Hz.
 - Outputs `PWM_OUT` for hobby servo actuation.
 
 ---------
+## Results
+![servo.gif](https://github.com/byett/dsd/blob/CPE487-Spring2024/Nexys-A7/Lab-2/servo.gif)
+- Servo motor responds to X-axis tilt by adjusting its position via PWM signal
+  
+![servo.gif](https://github.com/byett/dsd/blob/CPE487-Spring2024/Nexys-A7/Lab-2/servo.gif)
+- 16 onboard LEDs display X-axis data in binary; gradual rotation increases or decreases the LED pattern accordingly
+
+![servo.gif](https://github.com/byett/dsd/blob/CPE487-Spring2024/Nexys-A7/Lab-2/servo.gif)
+![servo.gif](https://github.com/byett/dsd/blob/CPE487-Spring2024/Nexys-A7/Lab-2/servo.gif)
+- 7-segment display shows real-time X, Y, and Z accelerometer values, with visible shifts toward minimum or maximum values as the board is rotated
+
+---------
 ## Getting Started
-- No starter code, just youtube tutorials
-- FSM was implemented from scratch based on the ADXL362 datasheet
-- PWM controller created using 'raw' data, not converted yet
+- The system takes input from the onboard ADXL362 3-axis accelerometer and the default 100 MHz clock signal. Outputs include real-time data visualization on the 7-segment display and the 16 onboard LEDs, as well as control of a servo motor through a PWM signal sent via the Pmod JA interface.
+- VHDL code was written from scratch, starting with research into SPI communication and the ADXL362 sensor's functionality. Found a helpful [Youtube video](https://www.youtube.com/watch?v=7b3YwQWwvXM) which provided insight into interfacing the ADXL362 with the Nexys A7. Core components like FSMs, clock division, LED control, and 7-segment display logic were implemented using skills learned in the course. Additional research was conducted to understand how to generate PWM signals for servo motor control.
 
+---------
+## Servo Circuit
+![Alt text](Schematic.png)
+- Schematic
+![Alt text](Circuit.png)
+- Physical circuit
+  
+---------
+## Conclusion
+- We both contributed equally across all aspects of the project. One of the major challenges we faced was establishing reliable SPI communication with the ADXL362 sensor. Issues included an unstable SCLK signal, inconsistent data transmission, and the CS pin unexpectedly going high during active communication. These problems were resolved through extensive debugging, trial and error, and hours of research to better understand VHDL behavior beyond just the logic structure. We also encountered unexplained flickering on LEDs 0 to 4 when displaying accelerometer data, particularly when the board was stationary—an issue that remains unresolved. Potential improvements for the project include allowing user selection of displayed axis data using onboard switches, integrating Y-axis input into the PWM control logic, implementing a PID algorithm for smoother control, and calculating the actual tilt angle from the raw accelerometer data.
 
-### Resources
-- SPI FSM Walkthrough : (https://www.youtube.com/watch?v=7b3YwQWwvXM)
-- ADXL362 Datasheet (https://www.analog.com/media/en/technical-documentation/data-sheets/adxl362.pdf)
-- Digilent VHDL Reference (https://github.com/Digilent/Nexys-A7-100T-OOB/blob/master/src/hdl/AccelerometerCtl.vhd)
-- (not used in code) PID Controller GitHub (ps://github.com/deepc94/pid-fpga-vhdl/tree/master)
-- SPI Protocol Tutorial (https://www.corelis.com/education/tutorials/spi-tutorial/)
+- Check out our [presentation](Presentation.pdf)
+  
+---------
+## Resources
+- SPI / ADXL362/ NexysA7 logic [Youtube video](https://www.youtube.com/watch?v=7b3YwQWwvXM)
+- [ADXL362 Datasheet](adxl362.pdf)
+- [Nexys A7 Reference Manual](https://digilent.com/reference/programmable-logic/nexys-a7/reference-manual)
+
 
 
 
