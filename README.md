@@ -1,7 +1,7 @@
 # CPE487 - FPGA-based accelerometer interface and feedback control system
 
 ### Overview :
-This project involves developing a flight control system using the Nexys A7-100T FPGA, using its onboard ADXL362 3-axis accelerometer via SPI communication to continuously monitor real time X, Y, Z axis data. The system processes this sensor data to simulate aircraft orientation and generates a corresponding PWM signal to drive a servo motor, mimicking how flight surfaces like ailerons or rudders respond to pitch or roll movements. Sensor data is also displayed on the 7-segment display and onboard LEDs. The implementation showcases skills in finite state machines (FSMs), SPI protocol, signal generation, sensor interfacing, and real-time hardware communication.
+This project involves developing a flight control system using the Nexys A7-100T FPGA, and its onboard ADXL362 3-axis accelerometer via SPI communication to continuously monitor real time X, Y, Z axis data. The system processes this sensor data to simulate aircraft orientation and generates a corresponding PWM signal to drive a servo motor, mimicking how flight surfaces like ailerons or rudders respond to pitch or roll movements. Sensor data is also displayed on the 7-segment display and onboard LEDs. The implementation showcases skills in finite state machines (FSMs), SPI protocol, signal generation, sensor interfacing, and real-time hardware communication.
 
  ![Alt text](visual1.png)
  - Visual representation of a board's 3-axial data relative to an aircraft's rotations. This board is not the one used in class!
@@ -26,12 +26,12 @@ Based on real-time tilt data from the onboard accelerometer (X, Y, and Z axes), 
 ---------
 
 ## Getting Started
-- The system takes input from the onboard ADXL362 3-axis accelerometer and the default 100 MHz clock signal. Outputs include real-time data visualization on the 7-segment display and the 16 onboard LEDs, as well as control of a servo motor through a PWM signal sent via the Pmod JA interface.
+- The system takes input from the onboard ADXL362 3-axis accelerometer and the default 100 MHz clock signal. 
    -  Clock division was handled by a custom clk_gen.vhd module that divides the 100 MHz input clock down to 4 MHz using a simple counter-based divider.
    - SPI communication was implemented in spi_master.vhd via a hand-coded 92-state FSM, controlling every SPI timing signal (SCLK, MOSI, SS) and reading all 6 bytes (2 bytes per axis) using burst mode. No IP blocks were used for SPI, the FSM transitions were manually optimized for state latency and edge alignment with SCLK.
-   - Each physical input/output was mapped using the .xdc file by matching get_ports constraints to pin numbers from the Digilent master XDC, such 
-   - Initial testing was done incrementally. The SPI state machine was validated by assigning output registers (acl_dataX) directly to LEDs for binary visualization:
-   - Later, display multiplexing and logic were added in leddec16.vhd, and seven-segment digits were verified through the bcd32 packaging. The project was synthesized, implemented, and the bitstream was uploaded using Vivado Hardware Manager, with hardware testing performed live on the board using physical switch flips, servo response, and live LED state analysis.
+   - Each physical input/output was mapped using the .xdc file by matching get_ports constraints to pin numbers from the diligent master XDC.
+   - Initial testing was done incrementally. The SPI state machine was validated by assigning output registers (acl_dataX) directly to LEDs for binary visualization.
+   - Later, display multiplexing and logic were added in leddec16.vhd, and seven-segment digits were verified through the bcd32 packaging. The project was synthesized, implemented, and the bitstream was uploaded using Vivado Hardware Manager, with hardware testing performed live on the board using physical switch flips, servo response, and live LED.
 - VHDL code was written from scratch, starting with research into SPI communication and the ADXL362 sensor's functionality. Found a helpful [Youtube video](https://www.youtube.com/watch?v=7b3YwQWwvXM) which provided insight into interfacing the ADXL362 with the Nexys A7. Core components like FSMs, clock division, LED control, and 7-segment display logic were implemented using skills learned in the course. Additional research was conducted to understand how to generate PWM signals for servo motor control.
 
 ---------
