@@ -50,7 +50,7 @@ Based on real-time tilt data from the onboard accelerometer (X, Y, and Z axes), 
 
 ---------
 ## Results
-![servo.gif](https://github.com/byett/dsd/blob/CPE487-Spring2024/Nexys-A7/Lab-2/servo.gif)
+![servo.gif](v1-ezgif.com-optimize.gif)
 - Servo motor responds to X-axis tilt by adjusting its position via PWM signal
   
 ![servo.gif](https://github.com/byett/dsd/blob/CPE487-Spring2024/Nexys-A7/Lab-2/servo.gif)
